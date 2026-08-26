@@ -1,31 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { Package } from 'lucide-react';
 
 export default function Layout() {
-  return (
-    <div className="flex flex-col min-h-screen">
-      <header className="navbar glass-panel">
-        <div className="container nav-container">
-          <Link to="/" className="nav-logo">
-            <Package className="w-8 h-8" />
-            <span>ArtisanLink</span>
-          </Link>
-          <nav className="flex gap-4 items-center">
-            <Link to="/catalog" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Shop Catalog</Link>
-            <Link to="/artisan" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Artisan Portal</Link>
-          </nav>
-        </div>
-      </header>
+  const [isVisible, setIsVisible] = useState(true);
 
-      <main className="flex-1 container" style={{ paddingBottom: '3rem', paddingTop: '2rem' }}>
+  // Navigation scroll effect
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Smart scroll visibility: hide when scrolling down, show when scrolling up or at top
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      
+      lastScrollY = currentScrollY;
+
+      const nav = document.querySelector('#main-nav');
+      if (nav) {
+        if (currentScrollY > 50) {
+          nav.classList.add('py-2', 'bg-black/80', 'border-gray-700');
+          nav.classList.remove('py-4', 'bg-black/40', 'border-gray-800');
+        } else {
+          nav.classList.remove('py-2', 'bg-black/80', 'border-gray-700');
+          nav.classList.add('py-4', 'bg-black/40', 'border-gray-800');
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#050505] relative selection-red text-white" style={{ viewTransitionName: 'main-content' }}>
+      <div className="noise-overlay"></div>
+
+      {/* Navigation */}
+      <nav id="main-nav" className={`fixed top-6 left-1/2 -translate-x-1/2 w-fit min-w-[700px] z-50 flex items-center justify-between px-10 py-4 rounded-full border border-gray-800 backdrop-blur-md bg-black/40 shadow-2xl transition-all duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-[250%]'}`} style={{ viewTransitionName: 'main-nav' }}>
+          <Link to="/" className="text-xl font-bold tracking-tighter font-serif shrink-0">ArtisanLink.</Link>
+          
+          <div className="hidden md:flex items-center gap-12 shrink-0">
+              <Link to="/catalog" className="text-sm uppercase tracking-widest font-semibold text-gray-300 hover:text-white transition-colors">Catalog</Link>
+              <Link to="/artisan" className="text-sm uppercase tracking-widest font-semibold text-gray-300 hover:text-white transition-colors">Sell Craft</Link>
+          </div>
+      </nav>
+
+      <main className="flex-1 w-full">
         <Outlet />
       </main>
 
-      <footer className="glass-panel" style={{ padding: '2rem 0', marginTop: 'auto', borderTop: '1px solid var(--border-color)' }}>
-        <div className="container flex justify-between items-center">
-          <p className="text-muted" style={{ margin: 0, fontSize: '0.9rem' }}>&copy; 2026 ArtisanLink - By Aura Artisans</p>
-        </div>
+      {/* Footer */}
+      <footer className="py-32 border-t border-white/5 bg-[#050505] relative overflow-hidden" style={{ viewTransitionName: 'main-footer' }}>
+          <div className="container mx-auto px-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+                  <div>
+                      <h2 className="text-[14vw] leading-[0.7] tracking-tighter text-white/5 font-bold select-none">
+                          ARTISANLINK.
+                      </h2>
+                  </div>
+                  
+                  <div className="flex flex-col gap-10 text-right min-w-[200px]">
+                      <div className="flex flex-col gap-4 text-gray-500 uppercase tracking-widest text-xs">
+                          <a href="#" className="hover:text-[#FF4500] transition-colors">Instagram</a>
+                          <a href="#" className="hover:text-[#FF4500] transition-colors">Twitter</a>
+                      </div>
+                      <p className="text-[10px] text-white/20 font-mono tracking-widest">© 2026 ARTISANLINK. ALL RIGHTS RESERVED.</p>
+                  </div>
+              </div>
+          </div>
       </footer>
     </div>
   );

@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superdesign | The Design Agent</title>
+    <meta name="view-transition" content="same-origin">
+    <link rel="prefetch" href="https://draft-bfe9d062-6cd0-40d9-a10f-2b7f22a277cc.preview.superdesign.dev" as="document">
+    <link rel="prefetch" href="https://draft-60b0ec5e-8e3c-473e-9714-9355e684ac04.preview.superdesign.dev" as="document">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #FF4500;
+            --card: #111111;
+            --text-warm: #FFE0E0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: white;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .selection-red::selection {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Noise Texture */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.05;
+            mix-blend-mode: overlay;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        }
+
+        /* Custom Animations */
+        @keyframes float-slow {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -50px) rotate(2deg); }
+            66% { transform: translate(-20px, 20px) rotate(-1deg); }
+        }
+
+        .animate-float {
+            animation: float-slow 20s ease-in-out infinite;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dock Magnification Simulation Styles */
+        .dock-item {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: bottom center;
+        }
+
+        .dock-container:hover .dock-item {
+            transform: scale(0.9);
+        }
+
+        .dock-item:hover {
+            transform: scale(1.6) translateY(-10px) !important;
+            z-index: 10;
+        }
+
+        .dock-item:hover + .dock-item,
+        .dock-item:has(+ .dock-item:hover) {
+            transform: scale(1.25) translateY(-5px) !important;
+        }
+
+        /* Aurora Background Effect */
+        .aurora-blade {
+            position: absolute;
+            background: linear-gradient(135deg, #ff2f3a 0%, #ff6b4a 50%, #ffb347 100%);
+            filter: blur(80px);
+            opacity: 0.15;
+            mix-blend-mode: screen;
+            z-index: -1;
+        }
+
+        .parallax-card {
+            transition: transform 0.1s linear;
+        }
+
+        /* View Transitions */
+        html { background-color: #050505; }
+        @view-transition { navigation: auto; }
+        ::view-transition { background-color: #050505; }
+
+        ::view-transition-old(main-nav),
+        ::view-transition-new(main-nav),
+        ::view-transition-old(main-footer),
+        ::view-transition-new(main-footer) {
+            animation: none;
+            mix-blend-mode: normal;
+        }
+
+        ::view-transition-old(main-content) {
+            animation: 0.25s ease-out both fade-out;
+        }
+        ::view-transition-new(main-content) {
+            animation: 0.25s ease-in 0.1s both fade-in;
+        }
+
+        @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: none;
+            mix-blend-mode: normal;
+        }
+    </style>
+</head>
+<body class="selection-red">
+    <div class="min-h-screen bg-[#050505] relative" style="view-transition-name: main-content" data-sd-id="1">
+        <div class="noise-overlay" data-sd-id="2"></div>
+
+        <!-- Navigation -->
+        <nav id="main-nav" class="fixed top-6 left-0 right-0 z-[60] px-6" style="view-transition-name: main-nav" data-sd-id="3">
+            <div class="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 rounded-full py-3 px-8 flex items-center justify-between shadow-2xl transition-all duration-500" data-sd-id="4">
+                <a href="#" id="nav-logo-link" class="text-xl font-bold tracking-tighter font-serif" data-sd-id="5">Superdesign.</a>
+                
+                <div class="hidden md:flex items-center space-x-8" data-sd-id="6">
+                    <a href="#expertise" id="nav-link-1" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors" data-sd-id="7">Expertise</a>
+                    <a href="#works" id="nav-link-2" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors" data-sd-id="8">Selected Works</a>
+                    <a href="#" id="nav-link-3" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors" data-sd-id="9">Perspectives</a>
+                </div>
+
+                <a href="#" id="nav-cta-btn" class="bg-white text-black px-5 py-2 rounded-full text-xs font-semibold hover:scale-105 transition-transform" data-sd-id="10">Start Project</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden" data-sd-id="11">
+            <!-- Aurora Elements -->
+            <div class="absolute inset-0 z-0" data-sd-id="12">
+                <div class="aurora-blade w-[600px] h-[300px] -top-20 -left-20 rotate-12 animate-float" data-sd-id="13"></div>
+                <div class="aurora-blade w-[500px] h-[400px] bottom-0 -right-20 -rotate-12 animate-float" style="animation-delay: -5s;" data-sd-id="14"></div>
+            </div>
+
+            <!-- Surrealist Floating Imagery -->
+            <div class="absolute left-[5%] top-[20%] w-[30vw] opacity-40 mix-blend-hard-light pointer-events-none animate-float" style="animation-duration: 25s;" data-sd-id="15">
+                <img src="https://framerusercontent.com/images/KNhiA5A2ykNYqNkj04Hk6BVg5A.png" alt="Floating Hand" class="w-full h-auto" data-sd-id="16">
+            </div>
+
+            <!-- Integrated Magnification Dock -->
+            <div class="reveal z-20 mb-16" data-sd-id="17">
+                <div class="dock-container flex items-end gap-4 p-4 rounded-3xl backdrop-blur-2xl bg-white/5 border border-white/10 shadow-2xl" data-sd-id="18">
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="19">
+                        <iconify-icon icon="lucide:home" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="20">
+                        <iconify-icon icon="lucide:search" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="21">
+                        <iconify-icon icon="lucide:user" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="22">
+                        <iconify-icon icon="lucide:bell" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="23">
+                        <iconify-icon icon="lucide:mail" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="24">
+                        <iconify-icon icon="lucide:camera" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="25">
+                        <iconify-icon icon="lucide:heart" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                    <div class="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group" data-sd-id="26">
+                        <iconify-icon icon="lucide:settings" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Headline Area -->
+            <div id="hero-content" class="container mx-auto px-6 text-center z-20" data-sd-id="27">
+                <div class="reveal" style="transition-delay: 200ms;" data-sd-id="28">
+                    <h1 class="text-6xl md:text-8xl font-medium leading-[1] tracking-tight mb-6 text-white font-serif" data-sd-id="29">
+                        Superdesign. <br>
+                        <span class="italic font-light text-[#ffe0e0] opacity-80" data-sd-id="30">The design agent.</span>
+                    </h1>
+                </div>
+                
+                <div class="reveal max-w-xl mx-auto mb-12" style="transition-delay: 400ms;" data-sd-id="31">
+                    <p class="text-lg text-white/70 font-light leading-relaxed" data-sd-id="32">
+                        Turning the unseen into the unforgettable. We design the spaces where your brand truly lives through refusal and absolute clarity.
+                    </p>
+                </div>
+
+                <div class="reveal flex flex-col items-center gap-8" style="transition-delay: 600ms;" data-sd-id="33">
+                    <a href="#" id="hero-cta-btn" class="bg-[#FF4500] text-white px-10 py-4 rounded-full text-lg font-medium hover:scale-105 hover:shadow-[0_0_40px_rgba(255,69,0,0.4)] transition-all duration-300" data-sd-id="34">
+                        Explore The Void
+                    </a>
+                    
+                    <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-mono text-white/40" data-sd-id="35">
+                        <span id="current-time" data-sd-id="36">--:-- --</span>
+                        <span class="w-px h-3 bg-white/20" data-sd-id="37"></span>
+                        <span data-sd-id="38">NYC, USA</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050505] to-transparent" data-sd-id="39"></div>
+        </section>
+
+        <!-- Featured Work Section -->
+        <section id="works" class="py-40 relative px-6" data-sd-id="40">
+            <div class="container mx-auto" data-sd-id="41">
+                <div class="reveal mb-24 text-center" data-sd-id="42">
+                    <h2 class="text-5xl md:text-7xl font-serif leading-tight text-white" data-sd-id="43">
+                        Empowering Artisans, <br>
+                        <span class="italic text-[#FF4500]" data-sd-id="44">Connecting Markets</span>
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto" data-sd-id="45">
+                    <!-- Card 1: Artisan -->
+                    <div class="parallax-card" data-speed="-0.02">
+                        <div class="reveal bg-[#111] border border-white/10 rounded-[2rem] p-10 md:p-12 flex flex-col shadow-2xl group hover:border-[#FF4500] hover:bg-[#151515] transition-all duration-500 h-full">
+                            <div class="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center mb-8 border border-blue-500/20 group-hover:border-[#FF4500]/30 transition-colors">
+                                <iconify-icon icon="lucide:store" class="text-blue-400 group-hover:text-[#FF4500] text-3xl transition-colors"></iconify-icon>
+                            </div>
+                            
+                            <div class="flex-grow">
+                                <h3 class="text-3xl md:text-4xl text-white mb-4 font-serif font-medium">
+                                    I am an Artisan
+                                </h3>
+                                <p class="text-gray-400 text-lg font-light leading-relaxed mb-10">
+                                    Snap a photo of your craft. Our AI will automatically tag and list it for buyers.
+                                </p>
+                            </div>
+                            
+                            <a href="https://draft-bfe9d062-6cd0-40d9-a10f-2b7f22a277cc.preview.superdesign.dev" class="w-full bg-[#FF4500] text-white py-4 rounded-xl flex items-center justify-center gap-2 font-medium hover:bg-[#ff571a] transition-colors shadow-[0_0_15px_rgba(255,69,0,0.2)] hover:shadow-[0_0_25px_rgba(255,69,0,0.4)]">
+                                Start Selling <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Buyer -->
+                    <div class="parallax-card md:mt-16" data-speed="0.02">
+                        <div class="reveal bg-[#111] border border-[#FF1493]/30 rounded-[2rem] p-10 md:p-12 flex flex-col shadow-2xl group hover:border-[#FF1493] hover:bg-[#151515] transition-all duration-500 h-full" style="transition-delay: 150ms;">
+                            <div class="w-16 h-16 rounded-2xl bg-[#FF1493]/10 flex items-center justify-center mb-8 border border-[#FF1493]/20">
+                                <iconify-icon icon="lucide:user" class="text-[#FF1493] text-3xl"></iconify-icon>
+                            </div>
+                            
+                            <div class="flex-grow">
+                                <h3 class="text-3xl md:text-4xl text-white mb-4 font-serif font-medium">
+                                    I am a Buyer
+                                </h3>
+                                <p class="text-gray-400 text-lg font-light leading-relaxed mb-10">
+                                    Discover authentic, beautifully crafted goods directly from the makers.
+                                </p>
+                            </div>
+                            
+                            <a href="https://draft-60b0ec5e-8e3c-473e-9714-9355e684ac04.preview.superdesign.dev" class="w-full bg-[#FF1493] text-white py-4 rounded-xl flex items-center justify-center gap-2 font-medium hover:bg-[#e6007e] transition-colors shadow-[0_0_15px_rgba(255,20,147,0.2)] hover:shadow-[0_0_25px_rgba(255,20,147,0.4)]">
+                                Shop Now <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Background Pattern -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(circle, #fff 1.5px, transparent 1.5px); background-size: 80px 80px;" data-sd-id="64">
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-32 border-t border-white/5 bg-[#050505] relative overflow-hidden" style="view-transition-name: main-footer" data-sd-id="65">
+            <div class="container mx-auto px-6" data-sd-id="66">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12" data-sd-id="67">
+                    <div data-sd-id="68">
+                        <h2 class="text-[14vw] leading-[0.7] tracking-tighter text-white/5 font-bold select-none" data-sd-id="69">
+                            SUPERDESIGN.
+                        </h2>
+                    </div>
+                    
+                    <div class="flex flex-col gap-10 text-right min-w-[200px]" data-sd-id="70">
+                        <div class="flex flex-col gap-4 text-gray-500 uppercase tracking-widest text-xs" data-sd-id="71">
+                            <a href="#" id="footer-social-1" class="hover:text-[#FF4500] transition-colors" data-sd-id="72">Instagram</a>
+                            <a href="#" id="footer-social-2" class="hover:text-[#FF4500] transition-colors" data-sd-id="73">Twitter</a>
+                            <a href="#" id="footer-social-3" class="hover:text-[#FF4500] transition-colors" data-sd-id="74">LinkedIn</a>
+                        </div>
+                        <p class="text-[10px] text-white/20 font-mono tracking-widest" data-sd-id="75">© 2024 SUPERDESIGN AGENT. ALL RIGHTS RESERVED.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 1. Reveal Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // 2. Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            document.querySelectorAll('.parallax-card').forEach(el => {
+                const speed = parseFloat(el.getAttribute('data-speed'));
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+
+            // Navbar Effect
+            const nav = document.querySelector('#main-nav > div');
+            if (scrolled > 50) {
+                nav.classList.add('py-2', 'bg-black/80', 'border-white/20');
+                nav.classList.remove('py-3', 'bg-black/40', 'border-white/10');
+            } else {
+                nav.classList.remove('py-2', 'bg-black/80', 'border-white/20');
+                nav.classList.add('py-3', 'bg-black/40', 'border-white/10');
+            }
+        });
+
+        // 3. Update Clock
+        function updateClock() {
+            const clock = document.getElementById('current-time');
+            const now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            m = m < 10 ? '0' + m : m;
+            clock.innerText = `${h}:${m} ${ampm}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 4. Hero Content Parallax
+        const heroContent = document.getElementById('hero-content');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            if (scrolled < 1000) {
+                heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+                heroContent.style.opacity = Math.max(0, 1 - (scrolled / 800));
+            }
+        });
+    </script>
+
+</body></html>
