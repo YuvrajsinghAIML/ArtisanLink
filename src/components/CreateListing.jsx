@@ -164,12 +164,12 @@ export default function CreateListing() {
           
           {/* Photo Upload Section */}
           <div 
-            className="w-full h-48 bg-[#1a1a1a] rounded-xl border border-dashed flex flex-col items-center justify-center mb-8 cursor-pointer hover:bg-[#1f1f1f] transition-all group overflow-hidden" 
+            className={`w-full bg-[#1a1a1a] rounded-xl border border-dashed flex flex-col items-center justify-center mb-8 cursor-pointer hover:bg-[#1f1f1f] transition-all group overflow-hidden ${imagePreview ? 'p-2' : 'h-48'}`} 
             style={{ borderColor: imagePreview ? '#FF4500' : 'rgba(255, 255, 255, 0.2)' }}
             onClick={() => fileInputRef.current?.click()}
           >
             {imagePreview ? (
-              <img src={imagePreview} alt="Preview" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+              <img src={imagePreview} alt="Preview" className="w-full h-auto max-h-72 object-contain rounded-lg opacity-90 group-hover:opacity-100 transition-opacity" />
             ) : (
               <div className="flex flex-col items-center">
                 <UploadCloud className="w-10 h-10 text-[#FF1493] mb-3 group-hover:scale-110 transition-transform" />
