@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, Image as ImageIcon, MapPin, Sparkles, Loader2, CheckCircle2 } from 'lucide-react';
+import { UploadCloud, Image as ImageIcon, MapPin, Sparkles, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function CreateListing() {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
+  const [imageBase64, setImageBase64] = useState('');
   
   // Location State
   const [address, setAddress] = useState('');
@@ -14,6 +15,7 @@ export default function CreateListing() {
   // AI Generation State
   const [aiDetails, setAiDetails] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [aiError, setAiError] = useState('');
   
   // Manual Input State
   const [title, setTitle] = useState('');
@@ -26,9 +28,16 @@ export default function CreateListing() {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
+      setAiError('');
+      setAiDetails(null);
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        const dataUrl = reader.result;
+        setImagePreview(dataUrl);
+        // Strip the "data:<mime>;base64," prefix and store raw base64
+        const base64 = dataUrl.split(',')[1];
+        setImageBase64(base64);
       };
       reader.readAsDataURL(file);
     }
@@ -71,25 +80,44 @@ export default function CreateListing() {
   };
 
   const generateAIDetails = async () => {
-    if (!image) {
+    if (!image || !imageBase64) {
       alert("Please upload an image first!");
       return;
     }
     
     setIsGenerating(true);
+    setAiError('');
     
-    // Simulate 2-second AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setTitle("Handcrafted Traditional Masterpiece");
-    setDescription("A beautiful, locally sourced handcrafted piece showcasing extraordinary artisan skill. Perfect for bringing an authentic, cultural touch to any modern living space.");
-    setAiDetails({
-      category: "Pottery",
-      material: "Clay",
-      specialty: "Hand-painted Traditional Motifs"
-    });
-    
-    setIsGenerating(false);
+    try {
+      const response = await fetch('/api/analyze-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: imageBase64,
+          mimeType: image.type || 'image/jpeg',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'AI analysis failed');
+      }
+
+      // Populate form fields from AI response
+      setTitle(data.title || '');
+      setDescription(data.description || '');
+      setAiDetails({
+        category: data.category || 'Other',
+        material: data.material || 'Unknown',
+        tags: data.tags || [],
+      });
+    } catch (error) {
+      console.error('AI generation error:', error);
+      setAiError(error.message || 'Something went wrong. You can still enter details manually.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -214,12 +242,24 @@ export default function CreateListing() {
                   {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5 text-[#FF4500]" />}
                   {isGenerating ? 'Analyzing Image...' : 'Auto-Generate Details (AI)'}
               </button>
+
+              {/* AI Error Notice */}
+              {aiError && (
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-red-900/20 border border-red-500/20 mt-1">
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-red-300 text-sm font-medium">AI analysis failed</p>
+                    <p className="text-red-400/70 text-xs mt-1">{aiError}</p>
+                    <p className="text-gray-500 text-xs mt-2">You can still enter details manually below.</p>
+                  </div>
+                </div>
+              )}
               
               {/* AI Generated Details Display */}
               {aiDetails && !isGenerating && (
                 <div className="p-4 rounded-xl mt-2 text-sm flex flex-col gap-2 bg-[#1a1a1a] border border-white/10">
                   <p className="text-gray-300 font-medium mb-1">Generated Tags:</p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <span className="px-2 py-1 rounded text-xs bg-purple-900/30 text-purple-300 border border-purple-500/20">
                       🏷️ {aiDetails.category}
                     </span>
@@ -227,11 +267,15 @@ export default function CreateListing() {
                       ✂️ {aiDetails.material}
                     </span>
                   </div>
-                  <div className="flex gap-2 mt-1">
-                    <span className="px-2 py-1 rounded text-xs bg-green-900/30 text-green-300 border border-green-500/20">
-                      ✨ {aiDetails.specialty}
-                    </span>
-                  </div>
+                  {aiDetails.tags && aiDetails.tags.length > 0 && (
+                    <div className="flex gap-2 flex-wrap mt-1">
+                      {aiDetails.tags.map((tag, index) => (
+                        <span key={index} className="px-2 py-1 rounded text-xs bg-green-900/30 text-green-300 border border-green-500/20">
+                          ✨ {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -293,3 +337,4 @@ export default function CreateListing() {
     </main>
   );
 }
+

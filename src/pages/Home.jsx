@@ -77,36 +77,6 @@ export default function Home() {
               <img src="https://framerusercontent.com/images/KNhiA5A2ykNYqNkj04Hk6BVg5A.png" alt="Floating Hand" className="w-full h-auto" />
           </div>
 
-          {/* Integrated Magnification Dock */}
-          <div className="reveal z-20 mb-16">
-              <div className="dock-container flex items-end gap-4 p-4 rounded-3xl backdrop-blur-2xl bg-white/5 border border-white/10 shadow-2xl">
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:home" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:search" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:user" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:bell" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:mail" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:camera" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:heart" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-                  <div className="dock-item w-14 h-14 rounded-2xl bg-[#111] border border-white/10 flex items-center justify-center cursor-pointer group">
-                      <iconify-icon icon="lucide:settings" class="text-2xl text-white group-hover:text-[#FF4500] transition-colors"></iconify-icon>
-                  </div>
-              </div>
-          </div>
-
           {/* Headline Area */}
           <div id="hero-content" className="container mx-auto px-6 text-center z-20">
               <div className="reveal" style={{ transitionDelay: '200ms' }}>
