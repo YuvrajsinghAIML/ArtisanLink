@@ -101,7 +101,8 @@ export default function CreateListing() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'AI analysis failed');
+        const msg = data.details ? `${data.error} (${data.details})` : (data.error || 'AI analysis failed');
+        throw new Error(msg);
       }
 
       // Populate form fields from AI response

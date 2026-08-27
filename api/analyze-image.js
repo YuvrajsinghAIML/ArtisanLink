@@ -64,6 +64,7 @@ Return ONLY the raw JSON object. No markdown, no code fences, no extra text.`;
     console.error("Gemini API error:", error);
     return res.status(500).json({
       error: "Failed to analyze image. Please try again or enter details manually.",
+      details: error.message || String(error),
     });
   }
 }
