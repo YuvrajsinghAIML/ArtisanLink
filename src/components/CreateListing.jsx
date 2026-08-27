@@ -214,7 +214,7 @@ export default function CreateListing() {
                         id="address" 
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        placeholder="e.g. Jaipur, Rajasthan" 
+                        placeholder="e.g. Mumbai, Maharashtra" 
                         className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors text-sm" 
                         required
                       />
@@ -226,7 +226,7 @@ export default function CreateListing() {
                         id="pincode" 
                         value={pincode}
                         onChange={(e) => setPincode(e.target.value)}
-                        placeholder="e.g. 302001" 
+                        placeholder="e.g. 400063" 
                         className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors text-sm" 
                         required
                       />
