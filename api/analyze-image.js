@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
 
     const prompt = `You are an expert product listing assistant for a handmade artisan marketplace.
 Analyze the uploaded product image carefully and return a JSON object with these exact keys:
