@@ -190,49 +190,6 @@ export default function CreateListing() {
           {/* Form Fields */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               
-              {/* Location Button */}
-              <button 
-                type="button" 
-                onClick={detectLocation}
-                disabled={isLocating}
-                className="w-full bg-blue-900/30 border border-blue-500/20 text-blue-400 hover:bg-blue-900/50 hover:border-blue-500/40 py-4 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors font-medium"
-              >
-                  {isLocating ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
-                  {isLocating ? 'Detecting Location...' : 'Detect My Location'}
-              </button>
-              
-              {locationError && (
-                <p className="text-xs text-center text-red-400">{locationError}</p>
-              )}
-
-              {/* Address Fields */}
-              <div className="space-y-4">
-                  <div className="flex flex-col">
-                      <label htmlFor="address" className="text-gray-300 text-sm font-medium mb-2">Address</label>
-                      <input 
-                        type="text" 
-                        id="address" 
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="e.g. Mumbai, Maharashtra" 
-                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors text-sm" 
-                        required
-                      />
-                  </div>
-                  <div className="flex flex-col">
-                      <label htmlFor="pincode" className="text-gray-300 text-sm font-medium mb-2">Pincode</label>
-                      <input 
-                        type="text" 
-                        id="pincode" 
-                        value={pincode}
-                        onChange={(e) => setPincode(e.target.value)}
-                        placeholder="e.g. 400063" 
-                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors text-sm" 
-                        required
-                      />
-                  </div>
-              </div>
-
               {/* AI Generate Button */}
               <button 
                 type="button" 
@@ -279,6 +236,49 @@ export default function CreateListing() {
                   )}
                 </div>
               )}
+
+              {/* Location Button */}
+              <button 
+                type="button" 
+                onClick={detectLocation}
+                disabled={isLocating}
+                className="w-full bg-blue-900/30 border border-blue-500/20 text-blue-400 hover:bg-blue-900/50 hover:border-blue-500/40 py-4 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors font-medium mt-2"
+              >
+                  {isLocating ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
+                  {isLocating ? 'Detecting Location...' : 'Detect My Location'}
+              </button>
+              
+              {locationError && (
+                <p className="text-xs text-center text-red-400">{locationError}</p>
+              )}
+
+              {/* Address Fields */}
+              <div className="space-y-4">
+                  <div className="flex flex-col">
+                      <label htmlFor="address" className="text-gray-300 text-sm font-medium mb-2">Address</label>
+                      <input 
+                        type="text" 
+                        id="address" 
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="e.g. Mumbai, Maharashtra" 
+                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors text-sm" 
+                        required
+                      />
+                  </div>
+                  <div className="flex flex-col">
+                      <label htmlFor="pincode" className="text-gray-300 text-sm font-medium mb-2">Pincode</label>
+                      <input 
+                        type="text" 
+                        id="pincode" 
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                        placeholder="e.g. 400063" 
+                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors text-sm" 
+                        required
+                      />
+                  </div>
+              </div>
 
               {/* Product Details */}
               <div className="space-y-4 mt-2">
