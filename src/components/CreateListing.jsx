@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { UploadCloud, Image as ImageIcon, MapPin, Sparkles, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-
+import { db, storage } from '../services/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 export default function CreateListing() {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
@@ -21,6 +23,10 @@ export default function CreateListing() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  
+  // Submit State
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   
   const fileInputRef = useRef(null);
 
@@ -121,25 +127,54 @@ export default function CreateListing() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!image || !price || !title || !description) {
       alert("Please fill all required fields and upload an image.");
       return;
     }
-    
-    const payload = {
-      image: image.name,
-      title,
-      description,
-      address,
-      pincode,
-      aiDetails: aiDetails || 'Not generated',
-      price: price
-    };
-    
-    console.log("FINAL LISTING PAYLOAD:", payload);
-    alert("Product Listed! Check console for details.");
+
+    setIsSubmitting(true);
+    try {
+      // 1. Bypass Storage and save image as Base64 text directly to Firestore
+      const imageUrl = imagePreview;
+
+      // 2. Save listing to Firestore
+      await addDoc(collection(db, 'listings'), {
+        title,
+        description,
+        price: Number(price),
+        image: imageUrl,
+        imageUrl: imageUrl,
+        address,
+        pincode,
+        category: aiDetails?.category || 'Other',
+        material: aiDetails?.material || 'Unknown',
+        region: address?.split(',')[0]?.trim() || 'India',
+        tags: aiDetails?.tags || [],
+        createdAt: serverTimestamp(),
+      });
+
+      setSubmitSuccess(true);
+      // Reset form after 2 seconds
+      setTimeout(() => {
+        setImage(null);
+        setImagePreview('');
+        setImageBase64('');
+        setTitle('');
+        setDescription('');
+        setPrice('');
+        setAddress('');
+        setPincode('');
+        setAiDetails(null);
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Submit error:', error);
+      alert('Failed to list product: ' + error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -328,9 +363,20 @@ export default function CreateListing() {
               {/* Submit Button */}
               <button 
                 type="submit" 
-                className="w-full bg-[#FF4500] text-white font-semibold py-4 rounded-xl hover:bg-[#ff571a] transition-all hover:shadow-[0_0_20px_rgba(255,69,0,0.4)] hover:scale-[1.02] mt-6 flex items-center justify-center gap-2"
+                disabled={isSubmitting || submitSuccess}
+                className={`w-full font-semibold py-4 rounded-xl transition-all hover:scale-[1.02] mt-6 flex items-center justify-center gap-2 ${
+                  submitSuccess 
+                    ? 'bg-green-600 text-white' 
+                    : 'bg-[#FF4500] text-white hover:bg-[#ff571a] hover:shadow-[0_0_20px_rgba(255,69,0,0.4)]'
+                } disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100`}
               >
-                  List Product <Sparkles className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <><Loader2 className="w-5 h-5 animate-spin" /> Uploading...</>
+                  ) : submitSuccess ? (
+                    <><CheckCircle2 className="w-5 h-5" /> Product Listed Successfully!</>
+                  ) : (
+                    <>List Product <Sparkles className="w-5 h-5" /></>
+                  )}
               </button>
 
           </form>
