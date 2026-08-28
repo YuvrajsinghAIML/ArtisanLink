@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import { Trash2 } from 'lucide-react';
 
 const MOCK_PRODUCTS = [
   { id: 'm1', title: 'Handwoven Silk Sari', price: 4500, category: 'Textiles', region: 'Assam', material: 'Silk', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
@@ -18,6 +19,26 @@ export default function BuyerCatalog() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  const handleDelete = async (e, productId) => {
+    e.stopPropagation(); // prevent card click
+    
+    // Don't try to delete mock products from Firestore
+    if (productId.toString().startsWith('m')) {
+      setProducts(prev => prev.filter(p => p.id !== productId));
+      return;
+    }
+
+    if (window.confirm("Are you sure you want to delete this listing?")) {
+      try {
+        await deleteDoc(doc(db, 'listings', productId));
+        setProducts(prev => prev.filter(p => p.id !== productId));
+      } catch (error) {
+        console.error("Error deleting document: ", error);
+        alert("Failed to delete product.");
+      }
+    }
+  };
 
   useEffect(() => {
     async function fetchProducts() {
@@ -147,7 +168,17 @@ export default function BuyerCatalog() {
                       className="w-full h-full object-cover product-img-zoom transition-transform duration-700 group-hover:scale-105"
                       onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'}
                     />
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                    
+                    {/* Delete Button */}
+                    <button 
+                      onClick={(e) => handleDelete(e, product.id)}
+                      className="absolute top-3 left-3 bg-red-500/80 hover:bg-red-600 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                      title="Delete Product"
+                    >
+                      <Trash2 className="w-4 h-4 text-white" />
+                    </button>
+
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full z-10">
                       <span className="text-xs font-semibold text-[#FF4500]">{product.category}</span>
                     </div>
                   </div>
