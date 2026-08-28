@@ -118,6 +118,65 @@ export default function Home() {
                   </h2>
               </div>
 
+              {/* Scrolling Product Showcase */}
+              <div className="mb-24 -mx-6 reveal" style={{ transitionDelay: '200ms', width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
+                {/* Row 1 - Scrolls Right to Left */}
+                <div className="marquee-row mb-3">
+                  <div className="marquee-track animate-marquee-left">
+                    {[
+                      { title: 'Handwoven Silk Sari', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Terracotta Clay Pot', image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Carved Wooden Elephant', image: '/images/products/wooden-elephant.png' },
+                      { title: 'Brass Temple Bell', image: '/images/products/brass-bell.png' },
+                      { title: 'Kashmiri Pashmina Shawl', image: '/images/products/pashmina-shawl.png' },
+                      { title: 'Blue Pottery Vase', image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    ].concat([
+                      { title: 'Handwoven Silk Sari', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Terracotta Clay Pot', image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Carved Wooden Elephant', image: '/images/products/wooden-elephant.png' },
+                      { title: 'Brass Temple Bell', image: '/images/products/brass-bell.png' },
+                      { title: 'Kashmiri Pashmina Shawl', image: '/images/products/pashmina-shawl.png' },
+                      { title: 'Blue Pottery Vase', image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    ]).map((item, i) => (
+                      <div key={`r1-${i}`} className="marquee-card flex-shrink-0 w-[280px] md:w-[340px] h-[180px] md:h-[220px] rounded-2xl overflow-hidden relative group mx-2">
+                        <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                          <span className="text-white font-medium text-sm">{item.title}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Row 2 - Scrolls Left to Right */}
+                <div className="marquee-row">
+                  <div className="marquee-track animate-marquee-right">
+                    {[
+                      { title: 'Madhubani Folk Painting', image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Kashmiri Pashmina Shawl', image: '/images/products/pashmina-shawl.png' },
+                      { title: 'Blue Pottery Vase', image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Dhokra Art Figurine', image: 'https://images.unsplash.com/photo-1567225477277-c8162eb4991d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Handwoven Silk Sari', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Terracotta Clay Pot', image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    ].concat([
+                      { title: 'Madhubani Folk Painting', image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Kashmiri Pashmina Shawl', image: '/images/products/pashmina-shawl.png' },
+                      { title: 'Blue Pottery Vase', image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Dhokra Art Figurine', image: 'https://images.unsplash.com/photo-1567225477277-c8162eb4991d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Handwoven Silk Sari', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                      { title: 'Terracotta Clay Pot', image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    ]).map((item, i) => (
+                      <div key={`r2-${i}`} className="marquee-card flex-shrink-0 w-[280px] md:w-[340px] h-[180px] md:h-[220px] rounded-2xl overflow-hidden relative group mx-2">
+                        <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                          <span className="text-white font-medium text-sm">{item.title}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                   {/* Card 1: Artisan */}
                   <div className="parallax-card" data-speed="-0.02">

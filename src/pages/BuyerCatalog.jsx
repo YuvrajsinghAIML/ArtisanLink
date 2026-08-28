@@ -5,14 +5,18 @@ import { db } from '../services/firebase';
 const MOCK_PRODUCTS = [
   { id: 'm1', title: 'Handwoven Silk Sari', price: 4500, category: 'Textiles', region: 'Assam', material: 'Silk', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
   { id: 'm2', title: 'Terracotta Clay Pot', price: 850, category: 'Pottery', region: 'Rajasthan', material: 'Clay', image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-  { id: 'm3', title: 'Carved Wooden Elephant', price: 1200, category: 'Woodwork', region: 'Odisha', material: 'Wood', image: 'https://images.unsplash.com/photo-1579724128087-21016738b556?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-  { id: 'm4', title: 'Brass Temple Bell', price: 2100, category: 'Metalwork', region: 'Gujarat', material: 'Brass', image: 'https://images.unsplash.com/photo-1598284594191-44755106cfbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+  { id: 'm3', title: 'Carved Wooden Elephant', price: 1200, category: 'Woodwork', region: 'Odisha', material: 'Wood', image: '/images/products/wooden-elephant.png' },
+  { id: 'm4', title: 'Brass Temple Bell', price: 2100, category: 'Metalwork', region: 'Gujarat', material: 'Brass', image: '/images/products/brass-bell.png' },
+  { id: 'm5', title: 'Madhubani Folk Painting', price: 3200, category: 'Paintings', region: 'Bihar', material: 'Canvas', image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+  { id: 'm6', title: 'Kashmiri Pashmina Shawl', price: 12500, category: 'Textiles', region: 'Kashmir', material: 'Pashmina', image: '/images/products/pashmina-shawl.png' },
+  { id: 'm7', title: 'Blue Pottery Vase', price: 1450, category: 'Pottery', region: 'Jaipur', material: 'Ceramic', image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+  { id: 'm8', title: 'Dhokra Art Figurine', price: 1800, category: 'Metalwork', region: 'Chhattisgarh', material: 'Brass', image: 'https://images.unsplash.com/photo-1567225477277-c8162eb4991d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
 ];
 
 export default function BuyerCatalog() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [products, setProducts] = useState(MOCK_PRODUCTS);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
@@ -22,15 +26,14 @@ export default function BuyerCatalog() {
         const querySnapshot = await getDocs(q);
         const fetchedProducts = querySnapshot.docs.map(doc => ({
           id: doc.id,
+          image: doc.data().imageUrl || doc.data().image, // Map imageUrl to image if it exists
           ...doc.data()
         }));
-        if (fetchedProducts.length > 0) {
-          setProducts([...fetchedProducts, ...MOCK_PRODUCTS]);
-        }
+        setProducts([...fetchedProducts, ...MOCK_PRODUCTS]);
       } catch (error) {
-        console.warn("Firestore fetch failed, using fallback mock data. Error:", error);
+        console.error("Firestore fetch failed:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
     
@@ -57,7 +60,7 @@ export default function BuyerCatalog() {
     elements.forEach(el => revealObserver.observe(el));
 
     return () => revealObserver.disconnect();
-  }, [products, loading, searchTerm, selectedCategory]);
+  }, [products, isLoading, searchTerm, selectedCategory]);
 
   const categories = [...new Set(products.map(p => p.category))];
 
@@ -112,8 +115,25 @@ export default function BuyerCatalog() {
           </div>
         </div>
 
-        {loading ? (
-          <div className="text-center py-20 text-gray-400 reveal">Loading catalog...</div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
+              <div key={n} className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col animate-pulse">
+                <div className="h-48 md:h-56 bg-white/5 w-full"></div>
+                <div className="p-5 flex flex-col gap-3">
+                  <div className="h-6 bg-white/5 rounded w-3/4"></div>
+                  <div className="flex gap-2 mb-4">
+                    <div className="h-5 bg-white/5 rounded-full w-16"></div>
+                    <div className="h-5 bg-white/5 rounded-full w-16"></div>
+                  </div>
+                  <div className="mt-auto flex justify-between items-center pt-2">
+                    <div className="h-6 bg-white/5 rounded w-1/4"></div>
+                    <div className="h-8 bg-white/5 rounded w-16"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <>
             {/* Product Grid */}
