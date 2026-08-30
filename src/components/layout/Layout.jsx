@@ -58,17 +58,19 @@ export default function Layout() {
       <footer className="py-32 border-t border-white/5 bg-[#050505] relative overflow-hidden" style={{ viewTransitionName: 'main-footer' }}>
           <div className="container mx-auto px-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
-                  <div>
+                  <div className="w-full">
                       <h2 className="text-[14vw] leading-[0.7] tracking-tighter text-white/5 font-bold select-none">
                           ARTISANLINK.
                       </h2>
+                      <div className="mt-12 md:mt-8 flex flex-col md:flex-row items-start md:items-center gap-4 border-t border-white/10 pt-4">
+                          <a href="https://github.com/YuvrajsinghAIML" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors text-xs uppercase tracking-widest font-mono">
+                              Created by YUVRAJSINGH <br/>  
+                              CLICK FOR GITHUB INFO
+                          </a>
+                      </div>
                   </div>
                   
-                  <div className="flex flex-col gap-10 text-right min-w-[200px]">
-                      <div className="flex flex-col gap-4 text-gray-500 uppercase tracking-widest text-xs">
-                          <a href="#" className="hover:text-[#FF4500] transition-colors">Instagram</a>
-                          <a href="#" className="hover:text-[#FF4500] transition-colors">Twitter</a>
-                      </div>
+                  <div className="flex flex-col gap-10 text-right min-w-[200px] shrink-0">
                       <p className="text-[10px] text-white/20 font-mono tracking-widest">© 2026 ARTISANLINK. ALL RIGHTS RESERVED.</p>
                   </div>
               </div>
