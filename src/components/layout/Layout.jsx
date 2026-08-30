@@ -57,8 +57,8 @@ export default function Layout() {
       {/* Footer */}
       <footer className="py-32 border-t border-white/5 bg-[#050505] relative overflow-hidden" style={{ viewTransitionName: 'main-footer' }}>
           <div className="container mx-auto px-6">
-              <div className="w-full flex justify-center overflow-hidden">
-                  <h2 className="text-[12vw] md:text-[10vw] lg:text-[130px] xl:text-[160px] leading-[0.8] tracking-tighter text-white/5 font-bold select-none whitespace-nowrap">
+              <div className="w-full relative">
+                  <h2 className="text-[14vw] leading-[0.7] tracking-tighter text-white/5 font-bold select-none whitespace-nowrap">
                       ARTISANLINK.
                   </h2>
               </div>
