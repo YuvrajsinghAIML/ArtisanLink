@@ -65,7 +65,7 @@ export default function Layout() {
               <div className="mt-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-t border-white/10 pt-4 w-full">
                   <div className="flex flex-col gap-4">
                       <a href="https://github.com/YuvrajsinghAIML" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors text-xs uppercase tracking-widest font-mono text-left">
-                          Created by YUVRAJSINGH <br/>  
+                          Created by YUVRAJSINGH & SHIVAM SINGH <br/>  
                           CLICK FOR GITHUB INFO
                       </a>
                   </div>
